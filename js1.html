@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hiiii</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+</head>
+<body style="margin: 200px;">
+
+<!-- 
+
+HTML Tag
+
+Tag has attributes 
+
+<div style="font-size:12px;" id="abcd" class="xyz"></div>
+
+style
+id
+class
+
+-->
+
+<h1>Names of Tutors</h1>
+
+<p class="tutor">Rajiv</p>
+<p class="tutor">Manasa</p>
+
+
+<h1>Names of Learners</h1>
+
+<p class="learner">Aakash</p>
+<p class="learner">Varun</p>
+<p class="learner">Manish</p>
+<p class="learner">Nitin</p>
+
+<hr>
+
+<label>Siri 10.0 !!!!</label>
+
+<input type="text" class="form-control" placeholder="Ask me something.." id="my_question">
+
+<hr>
+
+<button class="btn btn-primary" id="fetch_answer">Fetch Answer</button>
+
+<br><br><br>
+
+<h3>Answer:</h3>
+
+<p id="answer"></p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	
+/*
+
+Variables
+
+x,y,z
+
+var rajiv = 1;
+var kiran = 2; 
+
+Operators
+
+Conditional Statements
+
+Loops
+
+Functions
+
+Data Types = Array
+
+*/
+
+$(function(){
+
+	var tutors = ["Rajiv","Manasa","Kiran","Ajitha"]; // Arrays
+	var learners = ["Varun","Maneesh","Sha","Rajnikanth","Yogesh"]; // Arrays
+	var mentors = ["Nitin","Sathwik","Hima","Ankith"]; // Arrays
+
+	// Take an array and give unordered list of names
+
+	function swiggy(array_of_stuff)
+	{
+		var result = '';
+
+		for (var i = 0; i < array_of_stuff.length; i++) {
+
+			result = result + "<li>" + array_of_stuff[i] + "</li>";
+		}
+
+		result = "<ul>" + result + "</ul>";
+
+		return result;
+	}
+
+	$('#fetch_answer').click(function(){
+
+		var question = $('#my_question').val();
+
+		if(question == 'How are you?')
+		{
+			$('#answer').html("I am fine!");
+		}
+		else if(question == "What's the time now?")
+		{
+			var today = new Date();
+
+			var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+			var dateTime = date+' '+time;
+
+			$('#answer').html("It's "+dateTime);
+
+		}
+		else if(question == "Who are the teachers at Aham?")
+		{
+			$('#answer').html("Teachers at Aham:"+swiggy(tutors));
+		}
+		else if(question == "Who are the learners at Aham?")
+		{
+			$('#answer').html("Learners at Aham:"+swiggy(learners));
+		}
+		else if(question == "Who are the mentors at Aham?")
+		{
+			$('#answer').html("Mentors at Aham:"+swiggy(mentors));
+		}
+		else 
+		{
+			$('#answer').html("I don't understand, should I search web for you?")
+		}
+
+	});
+
+
+});
+
+
+</script>
+
+</body>
+</html>

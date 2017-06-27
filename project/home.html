@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+
+
+<script type="text/javascript">
+	var client = algoliasearch("U9GQ0Z3L01", "3a710948c143eddc748d9eba28e4bce2", {protocol: 'https:'});
+
+	var index = client.initIndex('bet_contacts');
+
+	var objects = [{
+	  firstname: 'Jimmie',
+	  lastname: 'Barninger'
+	}, {
+	  firstname: 'Warren',
+	  lastname: 'Speach'
+	}];
+
+	index.addObjects(objects, function(err, content) {
+	  console.log(content);
+	});
+</script>
+
+<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyDqkaE9IqUxX__nEjMw5jgGoQk-qkCNSSY",
+		authDomain: "bet-aham.firebaseapp.com",
+		databaseURL: "https://bet-aham.firebaseio.com",
+		projectId: "bet-aham",
+		storageBucket: "",
+		messagingSenderId: "674966981987"
+	};
+	firebase.initializeApp(config);
+
+	// firebase.auth().signOut().then(function() {
+	//   // Sign-out successful.
+	// }).catch(function(error) {
+	//   // An error happened.
+	// });
+
+ //  	var provider = new firebase.auth.GoogleAuthProvider();
+
+	// firebase.auth().onAuthStateChanged(function(user) {
+	//   if (user) {
+	//     // User is signed in.
+	//     var displayName = user.displayName;
+	//     var email = user.email;
+	//     var emailVerified = user.emailVerified;
+	//     var photoURL = user.photoURL;
+	//     var isAnonymous = user.isAnonymous;
+	//     var uid = user.uid;
+	//     var providerData = user.providerData;
+	    
+	//     console.log(user);
+
+	//   } else {
+
+	// 	firebase.auth().signInWithPopup(provider).then(function(result) {
+	// 	  // This gives you a Google Access Token. You can use it to access the Google API.
+	// 	  var token = result.credential.accessToken;
+	// 	  // The signed-in user info.
+	// 	  var user = result.user;
+	// 	  // ...
+	// 	}).catch(function(error) {
+	// 	  // Handle Errors here.
+	// 	  var errorCode = error.code;
+	// 	  var errorMessage = error.message;
+	// 	  // The email of the user's account used.
+	// 	  var email = error.email;
+	// 	  // The firebase.auth.AuthCredential type that was used.
+	// 	  var credential = error.credential;
+	// 	  // ...
+	// 	});
+
+	//   }
+	// });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyDqkaE9IqUxX__nEjMw5jgGoQk-qkCNSSY",
+		authDomain: "bet-aham.firebaseapp.com",
+		databaseURL: "https://bet-aham.firebaseio.com",
+		projectId: "bet-aham",
+		storageBucket: "",
+		messagingSenderId: "674966981987"
+	};
+	firebase.initializeApp(config);
+
+	// firebase.auth().signOut().then(function() {
+	//   // Sign-out successful.
+	// }).catch(function(error) {
+	//   // An error happened.
+	// });
+
+
+	firebase.auth().onAuthStateChanged(function(user) {
+	  if (user) {
+
+	    console.log(user);
+
+	  } else {
+	  	console.log("No user");
+	  }
+	});
+
+
+</script>
+
+</body>
+</html>

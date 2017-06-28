@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Homepage  -  BetGram</title>
+	<title>Add Post  -  BetGram</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -45,15 +45,15 @@
 
 	<div class="col-md-6 col-md-offset-3">
 		
-		<form>
+		<form id="post-form">
 			<div class="form-group">
-				<input type="file" id="mediaCapture">
+				<input type="file" id="mediaCapture" required>
               	<img id="output" src="" style="width:100px;float: left">
                 <small id="filename"></small>
 			</div>
 
 			<div class="form-group">
-				<textarea class="form-control"></textarea>
+				<textarea class="form-control" id="description" required></textarea>
 			</div>
 
 			<button type="submit" class="btn btn-primary">Submit</button>
@@ -74,26 +74,81 @@
 <script type="text/javascript" src="common.js"></script>
 
 <script type="text/javascript">
+
+	// When file is false, there is no file selected by user
+
+	// When user selects a file, we put that file in this variable
+
 	var file = false;
 
+	/*
+	
+		1. We have to upload the picture to storage
+
+		2. We have to create this post
+
+	*/
 
     $('#mediaCapture').on('change',function(event){
+
+    	// console.log("User uploaded a file", event.target.files[0]);
+
 	    file = event.target.files[0];
 
-	    if (file.type.match('image.*'))
-	    {
-	      var output = document.getElementById('output');
-	      output.src = URL.createObjectURL(event.target.files[0]);
-	      $('#output').show();
-	      $('#filename').val("");
-	    }
-	    else
-	    {
-	      document.getElementById('output').src = "";
-	      $('#output').hide();
-	    }
+	 //    var d = new Date;
+
+	 //    var filePath = firebase.auth().currentUser.uid +'-' + d.getTime() + '/' + file.name;
+
+	 //    console.log(filePath);
+
+		// storage.ref(filePath).put(file).then(function(snapshot) {
+		// 	console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
+		// });
 
 	});
+
+
+   $('#post-form').on('submit',function(event){
+
+    event.preventDefault(); // Stop default functionality
+
+    console.log("Description:",$('#description').val());
+
+    var d = new Date;
+
+    var filePath = firebase.auth().currentUser.uid +'-' + d.getTime() + '/' + file.name;
+
+    console.log(filePath);
+
+	storage.ref(filePath).put(file).then(function(snapshot) {
+		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
+
+	    var newPostKey = postRef.child('posts').push().key;
+
+	    var postData = {
+
+	    	uid: firebase.auth().currentUser.uid,
+	    	userName: firebase.auth().currentUser.displayName,
+	    	photoUrl: firebase.auth().currentUser.photoURL,
+	    	description: $('#description').val(),
+	    	image: snapshot.metadata.downloadURLs[0],
+	    	timestamp: d.getTime(),
+	    	timestampN: -1*d.getTime()
+
+	    };
+
+	    console.log(postData);
+	    
+	    var updates = {};
+	    updates['/posts/'+newPostKey] = postData;
+	    firebase.database().ref().update(updates);
+
+	});
+
+
+
+   });
+
 </script>
 
 </body>

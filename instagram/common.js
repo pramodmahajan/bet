@@ -10,6 +10,10 @@ var config = {
 
 firebase.initializeApp(config);
 
+var database = firebase.database();
+
+var postRef = database.ref('posts');
+
 var storage = firebase.storage();
 
 var storageRef = firebase.storage().ref();
@@ -20,9 +24,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   if (user) {
     // 1. Logged In - Show Logout
-    console.log("User is Logged In");
-    console.log(user);
-    console.log("Email:",user.email,user.displayName,user.photoURL);
+    // console.log("User is Logged In");
+    // console.log(user);
+    // console.log("Email:",user.email,user.displayName,user.photoURL);
 
     $('#logout').show();
     $('#add_post').show();
@@ -30,7 +34,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   } else {
     // 2. Logged Out/ Not Logged In - Show "Login with Google"
-    console.log("User is not logged in");
+    // console.log("User is not logged in");
 
     $('#logout').hide();
     $('#add_post').hide();

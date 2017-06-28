@@ -15,6 +15,22 @@
 
 			<hr>
 
+			Registration
+
+				<div class="form-group">
+					<label>Email</label>
+					<input type="email" name="email" class="form-control" id="reg_email">
+				</div>
+
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" name="password" class="form-control" id="reg_password">
+				</div>
+
+				<button class="btn btn-success" id="register">Register</button>
+
+			<hr>
+
 		  <div class="col-xs-6 col-md-3" id="user_details" style="display: none;">
 		    <a href="#" class="thumbnail">
 		      <img src="" id="user_photo">
@@ -129,7 +145,15 @@
 
 	});
 
+	$('#register').click(function(){
 
+		console.log("Register is clicked",$('#reg_email').val(),$('#reg_password').val());
+
+		firebase.auth().createUserWithEmailAndPassword($('#reg_email').val(), $('#reg_password').val()).catch(function(error) {
+		 
+		});
+
+	});
 
 
 </script>

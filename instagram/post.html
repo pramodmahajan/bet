@@ -104,12 +104,19 @@
 
 <script type="text/javascript">
 	$(function(){
+
+		// Get the id of the post
+
 		console.log($.getUrlVar('id'));
 
+		// Fetch data from firebase database
 
 		postRef.child($.getUrlVar('id'))
 				.once('value')
 				.then(function(data) {
+
+
+					// Put in on the page using html
 
 					$('#img').attr('src',data.val().image);
 					$('#userImage').attr('src',data.val().photoUrl);

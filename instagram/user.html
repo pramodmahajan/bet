@@ -63,7 +63,12 @@
 <script type="text/javascript">
 
 	$(function(){
+
+		// Fetch the user's id from url
+
 		console.log($.getUrlVar('id'));
+
+		// Fetch user details from firebase db
 
 		usersRef.child($.getUrlVar('id'))
 				.once('value')
@@ -73,6 +78,7 @@
 					$('#userPhoto').attr('src',data.val().photoURL);
 				});
 
+		// Fetch posts for that particular user
 
 		postRef.orderByChild("uid").equalTo($.getUrlVar('id')).limitToFirst(6).on('child_added', function(data) {
 			// console.log(data.val());

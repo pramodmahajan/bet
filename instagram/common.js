@@ -29,6 +29,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // console.log(user);
     // console.log("Email:",user.email,user.displayName,user.photoURL);
 
+    // Update information in database
     var updates = {};
     updates['/users/'+user.uid] = {name:user.displayName,photoURL:user.photoURL};
     firebase.database().ref().update(updates);

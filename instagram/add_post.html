@@ -117,8 +117,10 @@
 	storage.ref(filePath).put(file).then(function(snapshot) {
 		console.log('Uploaded a file',snapshot.metadata.downloadURLs[0]);
 
+		// Make a new child
 	    var newPostKey = postRef.child('posts').push().key;
 
+	    // Prepare json data
 	    var postData = {
 
 	    	uid: firebase.auth().currentUser.uid,
@@ -133,11 +135,13 @@
 
 	    console.log(postData);
 
+	    // Update to firebase
 	    var updates = {};
 	    updates['/posts/'+newPostKey] = postData;
 	    firebase.database().ref().update(updates);
 
-	    window.location="homepage.html";
+	    // Go back to homepage
+	    window.location="homepage.html";	
 
 	});
 

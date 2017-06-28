@@ -25,9 +25,13 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   if (user) {
     // 1. Logged In - Show Logout
-    // console.log("User is Logged In");
+    console.log("User is Logged In");
     // console.log(user);
     // console.log("Email:",user.email,user.displayName,user.photoURL);
+
+    var updates = {};
+    updates['/users/'+user.uid] = {name:user.displayName,photoURL:user.photoURL};
+    firebase.database().ref().update(updates);
 
     $('#logout').show();
     $('#add_post').show();

@@ -26,9 +26,9 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="../navbar/">Login</a></li>
-        <li><a href="../navbar/">Logout</a></li>
-        <li><a href="../navbar/">Add Post</a></li>
+        <li><a id="login" style="display: none;cursor: pointer;">Login</a></li>
+        <li><a id="logout" style="display: none;cursor: pointer;">Logout</a></li>
+        <li><a href="add_post.html" id="add_post" style="display: none;cursor: pointer;">Add Post</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
@@ -38,13 +38,11 @@
 
 	<div class="row">
 		<div class="col-md-2">
-			<img src="http://via.placeholder.com/128x128" class="img-responsive img-circle">
+			<img id="userPhoto" src="http://via.placeholder.com/128x128" class="img-responsive img-circle">
 		</div>
 
 		<div class="col-md-8">
-			<h2>Rajiv Seelam</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua.</p>
+			<h2 id="userName">Rajiv Seelam</h2>
 		</div>
 	</div>
 
@@ -67,8 +65,17 @@
 	$(function(){
 		console.log($.getUrlVar('id'));
 
+		usersRef.child($.getUrlVar('id'))
+				.once('value')
+				.then(function(data) {
+					console.log(data.val());
+					$('#userName').val(data.val().name);
+					$('#userPhoto').attr('src',data.val().photoURL);
+				});
+
+
 		postRef.orderByChild("uid").equalTo($.getUrlVar('id')).limitToFirst(6).on('child_added', function(data) {
-			console.log(data.val());
+			// console.log(data.val());
 
 			var thumbnail = '<div class="col-xs-12 col-md-3"><a href="post.html?id='+data.key+'" class="thumbnail"><img src="'+data.val().image+'"></a></div>';
 

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase-messaging.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <script type="text/javascript">
+
+  function signOut() {
+    
+    if (firebase.auth().currentUser) {
+      firebase.auth().signOut();
+    }
+  }
+
+   /**
+     * Handles the sign in button press.
+     */
+    function signInUser() {
+      // if (firebase.auth().currentUser) {
+      //   // [START signout]
+
+      //   firebase.auth().signOut();
+      //   // [END signout]
+      // } else {
+      var email = $('#email').val();
+      var password = $('#password').val();
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function(user) {
+          console.log("user : ", user);
+          alert("Welcome " +  user.displayName);
+
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+      //}
+    }
+
+  </script>
+</head>
+<body>
+<div class="row">
+        <div class="col-xs-6">
+                    <form id="image-form" action="#">
+                      <input id="mediaCapture" type="file" style="float: left">
+                      <img id="output" src="" style="width:100px;float: left">
+                      <small id="filename"></small>
+                      <button type="submit" class="btn btn-xs bg-teal-400 btn-labeled btn-labeled-right legitRipple"><b><i class="icon-circle-right2"></i></b> Send File</button>
+                    </form>
+        </div>
+
+       <!--  <div class="col-xs-6 text-right">
+                <button type="button" class="btn bg-teal-400 btn-labeled btn-labeled-right legitRipple" id="send_message"><b><i class="icon-circle-right2"></i></b> Send</button>
+        </div> -->
+      </div>
+
+      <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDqkaE9IqUxX__nEjMw5jgGoQk-qkCNSSY",
+    authDomain: "bet-aham.firebaseapp.com",
+    databaseURL: "https://bet-aham.firebaseio.com",
+    projectId: "bet-aham",
+    storageBucket: "bet-aham.appspot.com",
+    messagingSenderId: "674966981987"
+  };
+  firebase.initializeApp(config);
+
+  firebase.auth().onAuthStateChanged(function(user) {
+      
+    if (user) {
+          // $('#account-details').html(JSON.stringify(user, null, '  '));
+      } else{
+
+      }
+    });
+  var database = firebase.database();
+  var storage = firebase.storage();
+
+  if (firebase.auth().currentUser) {
+     var currentUser = firebase.auth().currentUser;
+
+
+    var postData = {
+      userId:currentUser.uid,
+      userName:currentUser.displayName,
+      profileUrl: currentUser.photoURL,
+      userEmail: currentUser.email,
+      imageUrl:null,
+      message:"hi"
+  };
+
+  }else {
+    alert("Please login to post!");
+  }
+  
+  var file = false;
+
+
+
+
+   $('#mediaCapture').on('change',function(event){
+    file = event.target.files[0];
+
+    if (file.type.match('image.*'))
+    {
+      var output = document.getElementById('output');
+      output.src = URL.createObjectURL(event.target.files[0]);
+      $('#output').show();
+      $('#filename').val("");
+    }
+    else
+    {
+      document.getElementById('output').src = "";
+      $('#output').hide();
+    }
+
+    //document.getElementById('image-form').reset()
+  });
+
+   $('#image-form').on('submit',function(event){
+    event.preventDefault();
+
+    if(file)
+    {
+
+      var filePath = 'e4e7267716d9cc665c17f30e1fa8fe38/' + file.name;
+      var fileName = file.name;
+
+      // $.blockUI({ 
+      //     message: '<i class="icon-spinner4 spinner"></i>',
+      //     overlayCSS: {
+      //         backgroundColor: '#1b2024',
+      //         opacity: 0.8,
+      //         zIndex: 1200,
+      //         cursor: 'wait'
+      //     },
+      //     css: {
+      //         border: 0,
+      //         color: '#fff',
+      //         padding: 0,
+      //         zIndex: 1201,
+      //         backgroundColor: 'transparent'
+      //     }
+      // });
+
+      storage.ref(filePath).put(file).then(function(snapshot) {
+          var fullPath = snapshot.metadata.fullPath;
+          console.log("full file path : "+ fullPath);
+          /*
+          file = null;
+          document.getElementById('output').src = "";
+          document.getElementById('image-form').reset();
+
+          var newPostKey = chatRef.child('chats').push().key;
+          postData['chatMessage'] = storage.ref(fullPath).toString();
+          postData['fileUrl'] = snapshot.metadata.downloadURLs[0];
+          postData['contentType'] = snapshot.metadata.contentType;
+          postData['fileName'] = snapshot.metadata.name;
+          postData['chatTimestamp'] = moment().unix();
+          postData['chatTimestampN'] = -1*postData['chatTimestamp'];
+          postData['chatType'] = 'file';
+          // console.log(newPostKey, postData);
+
+          threadData['lastChatId'] = newPostKey;
+
+          var updates = {};
+          updates['/'+messageThread+'/'+newPostKey] = postData;
+          updates['/'+messageThreadMetadata] = threadData;
+          firebase.database().ref().update(updates);
+*/
+         // $.unblockUI();
+
+
+      });
+
+    }
+
+  });
+
+
+
+</script>
+
+</body>
+</html>    
+
+
+    	
